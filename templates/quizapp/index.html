@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 
 <html>
-    <head lang="en">
-        <meta charset="UTF-8"/>
-        <title>
-            Quiz centre
-        </title>
-    </head>
+	<head> 
+		<title>Quiz Centre</title>
+	</head>
+	
+	<body>
+		<h1>Quiz Centre</h1> 
+        {% if user.is_authenticated %}
+        <p> Currently logged in as {{ username }}</p>
+        <a href="{% url 'quizapp:logout' %}">Logout</a>
+        {% endif %}
 
-    <body>
-        <h1>QUIZ CENTER</h1>
-    </body>
+		<div>
+		<form id="login_form" method="post">
+			{% csrf_token %}
+			
+			Username: <input type="text" name="username" value="" size="50" />
+			<br/>
+			Password: <input type="password" name="password" value="" size="50" />
+			<br/>
+			
+			<input type="submit" value="submit" />
+			
+		</form>
+		
+		</div>
+
+	</body>
+
 </html>

@@ -18,14 +18,14 @@ class QuizTaker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class QuizMaker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class Quiz(models.Model):

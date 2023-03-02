@@ -3,10 +3,10 @@ from .models import *
 
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(max_length=30, help_text="Please enter a username:", required=True)
-    password = forms.CharField(max_length=30, help_text="Please enter a password:", required=True)
-    email = forms.EmailField(help_text="Please enter an email.", required=True)
-    user_type = forms.ChoiceField(initial=0)
+    username = forms.CharField(max_length=30, label="Please enter a username:", required=True)
+    password = forms.CharField(max_length=30, label="Please enter a password:", required=True, widget=forms.PasswordInput())
+    email = forms.EmailField(label="Please enter an email.", required=True)
+    user_type = forms.ChoiceField(initial=0, label = "Would you like to register as a quiz taker or quiz maker?",choices = User.USER_CHOICES, widget=forms.RadioSelect)
 
     class Meta:
         model = User
@@ -24,12 +24,12 @@ class QuizForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
-    question_text = forms.TextField(max_length=5000, help_text="Please enter the question:", required=True)
+    question_text = forms.CharField(max_length=5000, help_text="Please enter the question:", required=True)
     image = forms.ImageField(help_text="Image:", required=False)
-    correct_answer = forms.TextField(max_length=200, help_text="Please enter the correct answer:", required=True)
-    incorrect_answer_1 = forms.TextField(max_length=200, help_text="Please enter the first incorrect answer:")
-    incorrect_answer_2 = forms.TextField(max_length=200, help_text="Please enter the second incorrect answer:")
-    incorrect_answer_3 = forms.TextField(max_length=200, help_text="Please enter the third incorrect answer:")
+    correct_answer = forms.CharField(max_length=200, help_text="Please enter the correct answer:", required=True)
+    incorrect_answer_1 = forms.CharField(max_length=200, help_text="Please enter the first incorrect answer:")
+    incorrect_answer_2 = forms.CharField(max_length=200, help_text="Please enter the second incorrect answer:")
+    incorrect_answer_3 = forms.CharField(max_length=200, help_text="Please enter the third incorrect answer:")
 
     class Meta:
         model = Question

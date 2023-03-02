@@ -60,3 +60,18 @@ def register(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('quizapp:index'))
+
+def quiz(request):
+    return render(request, 'quizapp/quiz.html')
+
+def about(request):
+    return render(request, 'quizapp/about.html')
+
+def contact(request):
+    return render(request, 'quizapp/contact.html')
+
+def quiz_maker_dashboard(request):
+    return render(request, 'quizapp/quizmaker.html')
+
+def quiz_taker_dashboard(request):
+    return render(request, 'quizapp/quiztaker.html')

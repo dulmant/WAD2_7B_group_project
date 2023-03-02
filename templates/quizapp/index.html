@@ -10,7 +10,10 @@
 		<h1>Quiz Centre</h1> 
         {% if user.is_authenticated %}
         <p> Currently logged in as {{ username }}</p>
-        <a href="{% url 'quizapp:logout' %}">Logout</a>
+        <a href="{% url 'quizapp:quiz' %}">Start quiz</a> <br>
+        <a href="{% url 'quizapp:logout' %}">Logout</a> <br>
+        <a href="{% url 'quizapp:quiztaker' %}">Quiz taker dashboard</a> <br> <!-- view one or the other based on user.user_type == 1 or 2-->
+        <a href="{% url 'quizapp:quizmaker' %}">Quiz maker dashboard</a> <br>
         {% endif %}
 
 		<div>
@@ -22,7 +25,7 @@
 			Password: <input type="password" name="password" value="" size="50" />
 			<br/>
 			
-			<input type="submit" value="submit" />
+			<input type="submit" value="Login" />
 			
 		</form>
 		

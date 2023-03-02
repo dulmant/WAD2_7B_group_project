@@ -1,0 +1,32 @@
+{% extends 'quizapp/base.html %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Quiz question
+{% endblock %}
+
+{% block body_block %}
+
+    <h1>Quiz - Basics of Java:</h1>
+
+    <div class="questionbody">
+        <form id="question" method="post" action="">
+            <div class="q-img">
+                <img src="https://commons.wikimedia.org/wiki/File:Health_Quiz,_RAMC;_651-3_Wellcome_L0024826_(cropped).jpg#/media/File:Health_Quiz,_RAMC;_651-3_Wellcome_L0024826_(cropped).jpg" width="500" height="600">
+            </div>
+            <div class="question">Question 1<br>
+                Select the correct answer based on the code in the image.
+            </div>
+            <div>
+                <input type="radio" id="ans1" name="answers" value="Sysout()">
+                <label for="ans1">Sysout()</label><br>
+                <input type="radio" id="ans2" name="answers" value="Systema()">
+                <label for="ans1">Systema()</label><br>
+                <input type="radio" id="ans3" name="answers" value="">
+                <label for="ans1">System.out.println(somthing)</label><br>
+                <input type="submit" name="submit" value="Submit"/>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

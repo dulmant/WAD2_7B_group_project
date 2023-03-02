@@ -1,0 +1,32 @@
+{% extends 'quizapp/base.html %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Quiz Taker Dashboard
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="dashboard">
+        <div id="lefthandside">
+            <h1>Taken Quizzes:</h1>
+            <ul class="taken-quizzes-list">
+                <li>Quiz 1</li>
+                <li>Quiz 2</li>
+                <li>Quiz 3</li>
+                <li>Quiz 4</li>
+            </ul>
+        </div>
+
+        <div id="righthandside">
+            <h1>Available Quizzes:</h1>
+            <ul class="available-quizzes-list">
+                <li>Quiz 1</li>
+                <li>Quiz 2</li>
+                <li>Quiz 3</li>
+                <li>Quiz 4</li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

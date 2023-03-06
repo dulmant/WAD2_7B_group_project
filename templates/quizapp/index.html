@@ -1,21 +1,30 @@
 <!DOCTYPE html>
+{% extends 'quizapp/base.html' %}
 {% load static %}
 
-<html>
-	<head> 
-		<title>Quiz Centre</title>
-	</head>
+{% block title_block %}
+    QuizCentre
+{% endblock %}
 	
-	<body>
+
+{% block body_block %}
+
 		<h1>Quiz Centre</h1> 
         {% if user.is_authenticated %}
         <p> Currently logged in as {{ username }}</p>
-        <a href="{% url 'quizapp:quiz' %}">Start quiz</a> <br>
-        <a href="{% url 'quizapp:logout' %}">Logout</a> <br>
-        <a href="{% url 'quizapp:quiztaker' %}">Quiz taker dashboard</a> <br> <!-- view one or the other based on user.user_type == 1 or 2-->
-        <a href="{% url 'quizapp:quizmaker' %}">Quiz maker dashboard</a> <br>
-        {% endif %}
-
+        
+    	<!-- a href="{% url 'quizapp:quiz' %}">Start quiz</a> <br -->
+        
+        	{% if user.user_type == 1 %}
+        		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a><br>
+			{% else %}
+				<a href="{% url 'quizapp:quizmaker' %}">Dashboard</a><br>
+			{% endif %}
+			
+			
+		<a href="{% url 'quizapp:logout' %}">Logout</a> <br>
+        	
+        {% else %}        
 		<div>
 		<form id="login_form" method="post">
 			{% csrf_token %}
@@ -30,7 +39,11 @@
 		</form>
 		
 		</div>
-		<li><a href="{% url 'quizapp:register' %}">Register</a></li>
-	</body>
+		
+		<button type="button">
+    		<a href="{% url 'quizapp:register' %}">Register</a>
+		</button>
+		
+		{% endif %}
 
-</html>
+{% endblock %}

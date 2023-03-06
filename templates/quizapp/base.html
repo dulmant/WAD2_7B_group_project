@@ -23,7 +23,12 @@
             <ul>
                 <li><a href="{% url 'quizapp:about' %}">About</a></li>
                 <li><a href="{% url 'quizapp:contact' %}">Contact Us</a></li>
-                <li><a href="{% url 'quizapp:index' %}">Home</a></li>
+                
+                {% if user.is_authenticated %}
+                	<li><a href="{% url 'quizapp:index' %}">Home</a></li>
+                {% else %}
+                	<li><a href="{% url 'quizapp:index' %}">Login/Register</a></li>
+                {% endif %}
             </ul>
         </div>
     </body>

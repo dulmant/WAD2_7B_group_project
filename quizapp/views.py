@@ -6,6 +6,7 @@ from django.urls import reverse
 from .forms import *
 from django.forms import formset_factory
 from django.shortcuts import get_object_or_404
+from .decorators import *
 
 
 def index(request):
@@ -69,6 +70,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.forms import formset_factory
 from .models import Quiz, Question
 
+@quiz_taker_required
 def quiz(request, quiz_slug):
     quiz_instance = get_object_or_404(Quiz, name_slug=quiz_slug)
     number_of_questions = quiz_instance.number_of_questions
@@ -96,6 +98,7 @@ def about(request):
 def contact(request):
     return render(request, 'quizapp/contact.html')
 
+@quiz_maker_required
 def quiz_maker_dashboard(request):
     has_quizzes=False
     if Quiz.objects.filter(author=request.user).exists():
@@ -105,6 +108,7 @@ def quiz_maker_dashboard(request):
     context={'my_quizzes':my_quizzes,'has_quizzes':has_quizzes}
     return render(request, 'quizapp/quizmaker.html', context)
 
+@quiz_taker_required
 def quiz_taker_dashboard(request):
     quizzes_exist=False
     if Quiz.objects.all().exists():
@@ -114,6 +118,7 @@ def quiz_taker_dashboard(request):
     context={'all_quizzes':all_quizzes,'quizzes_exist':quizzes_exist}
     return render(request, 'quizapp/quiztaker.html', context)
 
+@quiz_maker_required
 def create_quiz(request):
     if request.method == 'POST':
         form=QuizForm(request.POST)
@@ -128,6 +133,7 @@ def create_quiz(request):
     
     return render(request, 'quizapp/create_quiz.html', context)
 
+@quiz_maker_required
 def add_questions(request,quiz_slug, number_of_questions):
     MyFormSet = formset_factory(QuestionForm, extra=number_of_questions)
     if request.method == 'POST':

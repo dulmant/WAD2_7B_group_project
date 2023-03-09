@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.template.defaultfilters import slugify
 
 
 class User(AbstractUser):
@@ -29,35 +30,39 @@ class QuizMaker(models.Model):
 
 
 class Quiz(models.Model):
-    number_of_questions = models.IntegerField()
-    max_score = models.IntegerField()
-    topic = models.CharField(max_length=50)
-    author_id = models.ForeignKey(QuizMaker, on_delete=models.CASCADE)
+    number_of_questions = models.PositiveIntegerField()
+    max_score = models.PositiveIntegerField()
+    topic = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    name_slug = models.SlugField(unique=True)
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 class Question(models.Model):
     question_text = models.TextField(max_length=5000)
     image = models.ImageField()
+    max_score = models.PositiveIntegerField()
     correct_answer = models.TextField(max_length=200)
     incorrect_answer_1 = models.TextField(max_length=200)
     incorrect_answer_2 = models.TextField(max_length=200)
     incorrect_answer_3 = models.TextField(max_length=200)
-    quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id
+        return self.str(id)
 
 class QuizInstance(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz_maker = models.ForeignKey(User, on_delete=models.CASCADE,related_name='quiz_author')
     max_score = models.IntegerField()
     actual_score = models.IntegerField()
-    quiz_taker = models.ForeignKey(QuizTaker, on_delete=models.CASCADE)
+    quiz_taker = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id
+        return self.quiz_id.name+" by " +self.quiz_maker.username
 
 class QuestionInstance(models.Model):
     quiz_instance_id = models.ForeignKey(QuizInstance, on_delete=models.CASCADE)

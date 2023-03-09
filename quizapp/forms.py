@@ -14,27 +14,34 @@ class UserForm(forms.ModelForm):
 
 
 class QuizForm(forms.ModelForm):
-    number_of_questions = forms.IntegerField(initial=1, help_text="Please enter the number of questions:")
-    max_score = forms.IntegerField(initial=0, help_text="Please enter the max score:")
-    topic = forms.CharField(max_length=50, help_text="Please enter the topic:")
-
+    TOPICS = (
+        ("Java","Java"),
+        ("Algorithms","Algorithms"),
+        ("Web App Development","Web App Development"),
+    )
+    name = forms.CharField(max_length=250, label="Please enter the name of your quiz:")
+    topic = forms.ChoiceField(label="Please choose the topic of your quiz", choices = TOPICS)
+    number_of_questions = forms.IntegerField(initial=1, label="Please enter the number of questions:",min_value=1)
+    name_slug = forms.CharField(widget=forms.HiddenInput, required=False)
+    
     class Meta:
         model = Quiz
-        fields = ('number_of_questions', 'max_score', 'topic')
+        fields = ('name','number_of_questions','topic')
 
 
 class QuestionForm(forms.ModelForm):
-    question_text = forms.CharField(max_length=5000, help_text="Please enter the question:", required=True)
-    image = forms.ImageField(help_text="Image:", required=False)
-    correct_answer = forms.CharField(max_length=200, help_text="Please enter the correct answer:", required=True)
-    incorrect_answer_1 = forms.CharField(max_length=200, help_text="Please enter the first incorrect answer:")
-    incorrect_answer_2 = forms.CharField(max_length=200, help_text="Please enter the second incorrect answer:")
-    incorrect_answer_3 = forms.CharField(max_length=200, help_text="Please enter the third incorrect answer:")
+    question_text = forms.CharField(max_length=5000, label="Please enter the question:", required=True)
+    image = forms.ImageField(label="Image:", required=False)
+    correct_answer = forms.CharField(max_length=200, label="Please enter the correct answer:", required=True)
+    incorrect_answer_1 = forms.CharField(max_length=200, label="Please enter the first incorrect answer:")
+    incorrect_answer_2 = forms.CharField(max_length=200, label="Please enter the second incorrect answer:")
+    incorrect_answer_3 = forms.CharField(max_length=200, label="Please enter the third incorrect answer:")
+    max_score = forms.IntegerField(initial=1, label="Please enter the available points for this question:",min_value=1)
 
     class Meta:
         model = Question
         fields = ('question_text', 'image', 'correct_answer',
-                  'incorrect_answer_1', 'incorrect_answer_2', 'incorrect_answer_3')
+                  'incorrect_answer_1', 'incorrect_answer_2', 'incorrect_answer_3','max_score')
 
 
 class QuizInstanceForm(forms.ModelForm):

@@ -13,8 +13,6 @@
         {% if user.is_authenticated %}
         <p> Currently logged in as {{ username }}</p>
         
-    	<!-- a href="{% url 'quizapp:quiz' %}">Start quiz</a> <br -->
-        
         	{% if user.user_type == 1 %}
         		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a><br>
 			{% else %}

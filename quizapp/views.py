@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
@@ -20,7 +20,7 @@ def index(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'quizapp/index.html', {'username':request.user.username})
+        return render(request, 'quizapp/index.html', {'username': request.user.username})
 
 def register(request):
     registered = False
@@ -42,7 +42,7 @@ def register(request):
 
             profile.save()
             login(request, user)
-            messages.success(request, "Registration successful." )
+            messages.success(request, "Registration successful.")
             registered = True
         else:
             print(form.errors)
@@ -52,9 +52,9 @@ def register(request):
         form = UserForm()
 
     return render(request,
-                'quizapp/register.html',
-                context = {'form': form,
-                        'registered': registered})
+                  'quizapp/register.html',
+                  context={'form': form,
+                           'registered': registered})
 
 
 def user_logout(request):

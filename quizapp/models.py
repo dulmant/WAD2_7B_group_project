@@ -4,10 +4,10 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     USER_CHOICES = (
-        (1, 'quiz taker'), 
+        (1, 'quiz taker'),
         (2, 'quiz maker')
-        )
-    
+    )
+
     user_type = models.PositiveSmallIntegerField(choices=USER_CHOICES, default=1)
 
     def __str__(self):

@@ -43,14 +43,17 @@ class QuestionForm(forms.ModelForm):
         fields = ('question_text', 'image', 'correct_answer',
                   'incorrect_answer_1', 'incorrect_answer_2', 'incorrect_answer_3','max_score')
 
-
-class QuizInstanceForm(forms.ModelForm):
-    max_score = forms.IntegerField()
-    actual_score = forms.IntegerField()
-
+class QuestionInstanceForm(forms.ModelForm):
     class Meta:
-        model = QuizInstance
-        fields = ('max_score', 'actual_score')
+        model = QuestionInstance
+        fields = ('answer_choice',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['answer_choice'].widget = forms.RadioSelect(choices=[], attrs={'class': 'form-check-input'})
+
+    def set_choices(self, choices):
+        self.fields['answer_choice'].choices = choices
 
 
 class QuizInstanceForm(forms.ModelForm):

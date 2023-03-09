@@ -16,6 +16,6 @@ urlpatterns = [
     path('add_questions/<slug:quiz_slug>/<int:number_of_questions>', views.add_questions, name='add_questions'),
     # path('view_scores/', views.view_scores, name='view_scores'),
     # path('view_quizzes/', views.view_quizzes, name='view_quizzes'),
-    path('quiz', views.quiz, name='quiz'),
+    path('quiz/<slug:quiz_slug>/', views.quiz, name='quiz'),
     # path('quiz_success/', views.quiz_success, name='quiz_success'),
 ]

@@ -37,6 +37,9 @@ class Quiz(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     name_slug = models.SlugField(unique=True)
 
+    class Meta:
+        verbose_name_plural = 'Quizzes'
+
     def __str__(self):
         return self.name
 
@@ -52,7 +55,7 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.str(id)
+        return self.quiz.name + ": Question "+ str(self.id)
 
 class QuizInstance(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -68,6 +71,7 @@ class QuestionInstance(models.Model):
     quiz_instance_id = models.ForeignKey(QuizInstance, on_delete=models.CASCADE)
     max_score = models.IntegerField()
     actual_score = models.IntegerField()
+    answer_choice = models.CharField(max_length=500)
 
     def __str__(self):
         return self.id

@@ -12,11 +12,15 @@
             <h1>Your Quizzes:</h1>
             <h3>Avg. Score</h3>
             <ul class="your-quizzes-list">
-                {% for quiz in my_quizzes%}
+                {% if has_quizzes %}
+                {% for quiz in my_quizzes %}
                 <li>
-                    <div>{{quiz.name}}</div><div>Max score: {{quiz.max_score}}</div>
+                    <div>{{quiz.name}}</div><div>Number Of Questions: {{quiz.number_of_questions}}</div><div>Max score: {{quiz.max_score}}</div>
                 </li>
                 {% endfor %}
+                {% else %}
+                    <div>You have no quizzes yet - create one now!</div>
+                {% endif %}
             </ul>
         </div>
 
@@ -24,7 +28,7 @@
             <button name="view" class="button">
                 <a href="#">  View other Quizzes</button>
             <button name="create" class="button"> 
-                <a href="{% url 'quizapp:create_quiz' %}"> Create a Quiz and Add Questions</a>
+                <a href="{% url 'quizapp:create_quiz' %}"> Create a Quiz</a>
             </button>
         </div>
     </div>

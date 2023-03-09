@@ -1,0 +1,32 @@
+{% extends 'quizapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Quiz Maker Dashboard
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="dashboard">
+        <div id="lefthandside">
+            <h1>Your Quizzes:</h1>
+            <h3>Avg. Score</h3>
+            <ul class="your-quizzes-list">
+                {% for quiz in my_quizzes%}
+                <li>
+                    <div>{{quiz.name}}</div><div>Max score: {{quiz.max_score}}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="righthandside">
+            <button name="view" class="button">
+                <a href="#">  View other Quizzes</button>
+            <button name="create" class="button"> 
+                <a href="{% url 'quizapp:create_quiz' %}"> Create a Quiz and Add Questions</a>
+            </button>
+        </div>
+    </div>
+
+{% endblock %}

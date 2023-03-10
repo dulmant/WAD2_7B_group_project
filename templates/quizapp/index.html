@@ -6,6 +6,9 @@
     QuizCentre
 {% endblock %}
 	
+{% block css_block %}
+	<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 {% block body_block %}
 
@@ -23,22 +26,30 @@
 		<a href="{% url 'quizapp:logout' %}">Logout</a> <br>
         	
         {% else %}        
-		<div>
+		<div class="form-login">
 		<form id="login_form" method="post">
 			{% csrf_token %}
 			
-			Username: <input type="text" name="username" value="" size="50" />
-			<br/>
-			Password: <input type="password" name="password" value="" size="50" />
-			<br/>
+			<div class="form">
+				<input type="text" class="form-control" id="form-username" name="username" value="" size="50" placeholder="something@example.com"/>
+				<label for="form-username">Username:</label>
+			</div>
 			
-			<input type="submit" value="Login" />
+			<br/>
+			<div class="form">
+				<input type="password" class="form-control" id="form-password" name="password" value="" size="50" placeholder="Password"/>
+				<label for="form-password">Password:</label>
+			</div>
+			
+			<br/>
+
+			<input type="submit" id="button-submit" value="Login" />
 			
 		</form>
 		
 		</div>
 		
-		<button type="button">
+		<button type="button" id="button-register">
     		<a href="{% url 'quizapp:register' %}">Register</a>
 		</button>
 		

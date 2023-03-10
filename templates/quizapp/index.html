@@ -13,17 +13,21 @@
 {% block body_block %}
 
 		<h1>Quiz Centre</h1> 
+
         {% if user.is_authenticated %}
-        <p> Currently logged in as {{ username }}</p>
+		<div class="contents">
+			<p> Currently logged in as {{ username }}</p>
         
         	{% if user.user_type == 1 %}
-        		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a><br>
+        		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a>
 			{% else %}
-				<a href="{% url 'quizapp:quizmaker' %}">Dashboard</a><br>
+				<a href="{% url 'quizapp:quizmaker' %}">Dashboard</a>
 			{% endif %}
 			
 			
 		<a href="{% url 'quizapp:logout' %}">Logout</a> <br>
+		</div>
+
         	
         {% else %}        
 		<div class="form-login">

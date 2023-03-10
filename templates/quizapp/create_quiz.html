@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'quizapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    QuizCentre
+{% endblock %}
+	
+
+{% block body_block %}
+
+		<h1>Quiz Centre</h1> 
+        {% if user.is_authenticated %}
+        <p> Currently logged in as {{ username }}</p>   	
+        {% endif %}        
+		<div>
+		<form id="Quiz_Form" method="post">
+			{% csrf_token %}
+			
+			{{ form.as_p }}
+			
+			<button type="submit" > Save Quiz and Add Questions</button>
+			
+		</form>
+		
+		</div>
+		
+		
+
+{% endblock %}

@@ -11,7 +11,6 @@
         <div id="lefthandside">
             <h1>Taken Quizzes:</h1>
             <ul class="taken-quizzes-list">
-            	<!-- li> <a href="{% url 'quizapp:quiz' %}"> {{ question.title }}</a> </li -->
                 <li>Quiz 1</li>
                 <li>Quiz 2</li>
                 <li>Quiz 3</li>
@@ -22,10 +21,19 @@
         <div id="righthandside">
             <h1>Available Quizzes:</h1>
             <ul class="available-quizzes-list">
-                <li>Quiz 1</li>
-                <li>Quiz 2</li>
-                <li>Quiz 3</li>
-                <li>Quiz 4</li>
+                <h2>** INSERT DROPDOWN TO FILTER BY TOPIC **</h2>
+                {% if quizzes_exist %}
+                {% for quiz in all_quizzes %}
+                <li>
+                    <div>{{quiz.name}}</div><div>Number Of Questions: {{quiz.number_of_questions}}</div><div>Max score: {{quiz.max_score}}</div>
+                    <button name="take_quiz" class="button"> 
+                        <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}"> Take this Quiz</a>
+                    </button>
+                </li>
+                {% endfor %}
+                {% else %}
+                    <div>No quizzes avaiable yet, please come back later.</div>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.urls import reverse
 from .forms import *
 from django.forms import formset_factory
+from django.shortcuts import get_object_or_404
+from .decorators import *
+
 
 def index(request):
     if request.method == 'POST':
@@ -63,8 +66,31 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('quizapp:index'))
 
-def quiz(request):
-    return render(request, 'quizapp/quiz.html')
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.forms import formset_factory
+from .models import Quiz, Question
+
+@quiz_taker_required
+def quiz(request, quiz_slug):
+    quiz_instance = get_object_or_404(Quiz, name_slug=quiz_slug)
+    number_of_questions = quiz_instance.number_of_questions
+
+    questions = Question.objects.filter(quiz=quiz_instance)
+
+    question_options = []
+    for question in questions:
+        # add options to question_options list
+        options = [question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2, question.incorrect_answer_3]
+        question_options.append([question, options])
+
+    context = {
+        'quiz': quiz_instance,
+        'questions': questions,
+        'number_of_questions': number_of_questions,
+        'quiz_instance': quiz_instance,
+        'question_options': question_options
+    }
+    return render(request, 'quizapp/quiz.html', context)
 
 def about(request):
     return render(request, 'quizapp/about.html')
@@ -72,14 +98,27 @@ def about(request):
 def contact(request):
     return render(request, 'quizapp/contact.html')
 
+@quiz_maker_required
 def quiz_maker_dashboard(request):
+    has_quizzes=False
+    if Quiz.objects.filter(author=request.user).exists():
+        has_quizzes=True
     my_quizzes = Quiz.objects.filter(author=request.user)
-    context={'my_quizzes':my_quizzes}
+      
+    context={'my_quizzes':my_quizzes,'has_quizzes':has_quizzes}
     return render(request, 'quizapp/quizmaker.html', context)
 
+@quiz_taker_required
 def quiz_taker_dashboard(request):
-    return render(request, 'quizapp/quiztaker.html')
+    quizzes_exist=False
+    if Quiz.objects.all().exists():
+        quizzes_exist=True
+    all_quizzes = Quiz.objects.all()
+      
+    context={'all_quizzes':all_quizzes,'quizzes_exist':quizzes_exist}
+    return render(request, 'quizapp/quiztaker.html', context)
 
+@quiz_maker_required
 def create_quiz(request):
     if request.method == 'POST':
         form=QuizForm(request.POST)
@@ -94,6 +133,7 @@ def create_quiz(request):
     
     return render(request, 'quizapp/create_quiz.html', context)
 
+@quiz_maker_required
 def add_questions(request,quiz_slug, number_of_questions):
     MyFormSet = formset_factory(QuestionForm, extra=number_of_questions)
     if request.method == 'POST':

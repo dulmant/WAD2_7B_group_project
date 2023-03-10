@@ -88,6 +88,23 @@ class Migration(migrations.Migration):
                 ('max_score', models.IntegerField()),
                 ('actual_score', models.IntegerField()),
                 ('quiz_instance_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quizapp.quizinstance')),
+<<<<<<< HEAD
+=======
+            ],
+        ),
+        migrations.CreateModel(
+            name='Question',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('question_text', models.TextField(max_length=5000)),
+                ('image', models.ImageField(upload_to='')),
+                ('max_score', models.PositiveIntegerField()),
+                ('correct_answer', models.TextField(max_length=200)),
+                ('incorrect_answer_1', models.TextField(max_length=200)),
+                ('incorrect_answer_2', models.TextField(max_length=200)),
+                ('incorrect_answer_3', models.TextField(max_length=200)),
+                ('quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quizapp.quiz')),
+>>>>>>> a945e36bb63d501d1679ab705439a2a069c52e4f
             ],
         ),
         migrations.CreateModel(

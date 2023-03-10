@@ -35,27 +35,31 @@
 			{% csrf_token %}
 			
 			<div class="form">
-				<input type="text" class="form-control" id="form-username" name="username" value="" size="50" placeholder="something@example.com"/>
 				<label for="form-username">Username:</label>
+				<input type="text" class="form-control" id="form-username" name="username" value="" size="50" placeholder="something@example.com"/>
 			</div>
 			
 			<br/>
 			<div class="form">
-				<input type="password" class="form-control" id="form-password" name="password" value="" size="50" placeholder="Password"/>
 				<label for="form-password">Password:</label>
+				<input type="password" class="form-control" id="form-password" name="password" value="" size="50" placeholder="Password"/>
 			</div>
 			
 			<br/>
-
-			<input type="submit" id="button-submit" value="Login" />
+			
+			<div class="contents">
+				<input type="submit" id="button-submit" value="Login" />
+			</div>
 			
 		</form>
 		
 		</div>
 		
-		<button type="button" id="button-register">
-    		<a href="{% url 'quizapp:register' %}">Register</a>
-		</button>
+		<div class="button-register">
+			<button type="button">
+    			<a href="{% url 'quizapp:register' %}">Register</a>
+			</button>
+		<div>
 		
 		{% endif %}
 

@@ -5,8 +5,19 @@
     Contact us
 {% endblock %}
 
+{% block css_block %}
+	<link rel="stylesheet" href="{% static 'css/about-contact_us.css' %}">
+{% endblock %}
+
+
 {% block body_block %}
 
     <h1>Contact us:</h1>
-    <p> insert contact us text here </p>
+    
+    <div class="contents">
+    <p> Email: quizapp@gmail.com </br> 
+    	Phone: 01234567
+    </p>
+    </div>
+    
 {% endblock %}

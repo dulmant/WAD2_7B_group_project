@@ -1,0 +1,31 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 40px;
+    background-color: #ffbb63;
+    justify-content: center;
+
+}
+
+
+h1 {
+    text-align: center;
+}
+
+.contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+#footer {
+
+}

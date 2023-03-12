@@ -6,41 +6,60 @@
     QuizCentre
 {% endblock %}
 	
+{% block css_block %}
+	<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 {% block body_block %}
 
 		<h1>Quiz Centre</h1> 
+
         {% if user.is_authenticated %}
-        <p> Currently logged in as {{ username }}</p>
+		<div class="contents">
+			<p> Currently logged in as {{ username }}</p>
         
         	{% if user.user_type == 1 %}
-        		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a><br>
+        		<a href="{% url 'quizapp:quiztaker' %}">Dashboard</a>
 			{% else %}
-				<a href="{% url 'quizapp:quizmaker' %}">Dashboard</a><br>
+				<a href="{% url 'quizapp:quizmaker' %}">Dashboard</a>
 			{% endif %}
 			
 			
 		<a href="{% url 'quizapp:logout' %}">Logout</a> <br>
+		</div>
+
         	
         {% else %}        
-		<div>
+		<div class="form-login">
 		<form id="login_form" method="post">
 			{% csrf_token %}
 			
-			Username: <input type="text" name="username" value="" size="50" />
+			<div class="form">
+				<label for="form-username">Username:</label>
+				<input type="text" class="form-control" id="form-username" name="username" value="" size="50" placeholder="something@example.com"/>
+			</div>
+			
 			<br/>
-			Password: <input type="password" name="password" value="" size="50" />
+			<div class="form">
+				<label for="form-password">Password:</label>
+				<input type="password" class="form-control" id="form-password" name="password" value="" size="50" placeholder="Password"/>
+			</div>
+			
 			<br/>
 			
-			<input type="submit" value="Login" />
+			<div class="contents">
+				<input type="submit" id="button-submit" value="Login" />
+			</div>
 			
 		</form>
 		
 		</div>
 		
-		<button type="button">
-    		<a href="{% url 'quizapp:register' %}">Register</a>
-		</button>
+		<div class="button-register">
+			<button type="button">
+    			<a href="{% url 'quizapp:register' %}">Register</a>
+			</button>
+		<div>
 		
 		{% endif %}
 

@@ -5,8 +5,17 @@
     About us
 {% endblock %}
 
+{% block css_block %}
+	<link rel="stylesheet" href="{% static 'css/about-contact_us.css' %}">
+{% endblock %}
+
+
 {% block body_block %}
 
     <h1>About us:</h1>
+    
+    <div class="contents">
     <p> This is the about page! </p>
+    </div>
+    
 {% endblock %}

@@ -19,18 +19,19 @@
                 <form method="post">
                     {% csrf_token %}
                     <div>
-                      {% for question, options in question_options %}
-                        <h3>{{ question.question_text }}</h3>
-                        {% for option in options|shuffle %}
-                            <div>
-                                <input type="radio" name="{{ question.id }}" value="{{ option.id }}" id="id_{{ option.id }}">
-                                <label for="id_{{ option }}">{{ option }}</label>
-                            </div>
+                      {% for question_data in question_data_list %}
+                        <h3>{{ question_data.question.question_text }}</h3>
+                        {% for option in question_data.options|shuffle %}
+                          <div>
+                            <input type="radio" name="{{ question_data.question.id }}" value="{{ option }}" id="id_{{ option }}">
+                            <label for="id_{{ option }}">{{ option }}</label>
+                          </div>
                         {% endfor %}
                       {% endfor %}
                     </div>
                     <button type="submit">Submit</button>
                   </form>
+                  
             </div>
         </form>
     </div>

@@ -43,9 +43,9 @@ class QuestionForm(forms.ModelForm):
         fields = ('question_text', 'image', 'correct_answer',
                   'incorrect_answer_1', 'incorrect_answer_2', 'incorrect_answer_3','max_score')
 
-class QuestionInstanceForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
     class Meta:
-        model = QuestionInstance
+        model = Answer
         fields = ('answer_choice',)
 
     def __init__(self, *args, **kwargs):
@@ -55,11 +55,3 @@ class QuestionInstanceForm(forms.ModelForm):
     def set_choices(self, choices):
         self.fields['answer_choice'].choices = choices
 
-
-class QuizInstanceForm(forms.ModelForm):
-    max_score = forms.IntegerField()
-    actual_score = forms.IntegerField()
-
-    class Meta:
-        model = QuizInstance
-        fields = ('max_score', 'actual_score')

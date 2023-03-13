@@ -74,6 +74,7 @@ def quiz(request, quiz_slug):
     quiz_instance = get_object_or_404(Quiz, name_slug=quiz_slug)
     questions = Question.objects.filter(quiz=quiz_instance)
     question_data_list = []
+    quiz_attempt_score = 0
 
     for question in questions:
         question_options = [question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2,
@@ -86,8 +87,10 @@ def quiz(request, quiz_slug):
             selected_option = request.POST.get(str(question.id))
             if selected_option == question.correct_answer:
                 actual_score = question.max_score
+                quiz_attempt_score += question.max_score
             else:
                 actual_score = 0
+            # update each answer to the current QuizAttempt object
             quiz_attempt = QuizAttempt.objects.update_or_create(
             quiz=quiz_instance,
             quiz_maker=quiz_instance.author,
@@ -95,16 +98,19 @@ def quiz(request, quiz_slug):
             actual_score=actual_score,
             quiz_taker=request.user
             )[0]
+            # create an Answer object for each answer
             answer = Answer.objects.create(
                 quiz=quiz_instance,
                 question=question,
                 answer_choice=selected_option,
                 max_score=question.max_score,
-                actual_score=actual_score,
+                actual_score=quiz_attempt_score,
                 quiz_attempt=quiz_attempt,
                 quiz_taker=request.user,
             )
-
+            request.session['quiz_attempt_score'] = quiz_attempt_score # store actual score to pass it to the next view
+        return redirect(reverse('quizapp:quiz_finish',
+                                kwargs = {'quiz_slug' : quiz_slug,}))
     context = {
         'quiz': quiz_instance,
         'questions': questions,
@@ -115,6 +121,11 @@ def quiz(request, quiz_slug):
     return render(request, 'quizapp/quiz.html', context)
 
 
+@quiz_taker_required
+def quiz_finish(request, quiz_slug):
+    context = {'quiz_slug' : quiz_slug,
+               'score' : request.session.get('quiz_attempt_score') }
+    return render(request, 'quizapp/quiz_finish.html',context)
 
 def about(request):
     return render(request, 'quizapp/about.html')

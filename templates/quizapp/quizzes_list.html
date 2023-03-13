@@ -1,0 +1,29 @@
+{% extends 'quizapp/base.html' %}
+{% load static %}
+{% load quizapp_tags %}
+
+{% block title_block %}
+    Other Quizzes List
+{% endblock %}
+
+{% block body_block %}
+
+    <h1>Other Quizzes list</h1>
+    <h2 class="text-muted"></h2>
+    <br>
+    <div id="quizzes-list">
+        <ul class="list-group">
+            {% if quizzes_exist %}
+            {% for quiz in all_quizzes %}
+                <li class="list-group-item">
+                    <div>{{quiz.name}}</div><div>Number of Questions: {{quiz.number_of_questions}}</div>
+                    <button name="view_quiz" class="btn btn-primary">
+                        <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}">View Quiz</a>
+                    </button>
+                </li>
+            {% endfor %}
+            {% else %}
+                <div>No quizzes available yet, please come back later</div>
+            {% endif %}
+        </ul>
+    </div>

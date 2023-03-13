@@ -195,3 +195,6 @@ def add_questions(request, quiz_slug, number_of_questions):
 
     return render(request, 'quizapp/add_questions.html', {'formset': formset, "username": request.user.username})
 
+@quiz_maker_required
+def view_other_quizzes(request):
+    return render(request, 'quizapp/quizzes_list.html')

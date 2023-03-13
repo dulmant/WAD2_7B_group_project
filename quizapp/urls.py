@@ -16,5 +16,6 @@ urlpatterns = [
     # path('view_scores/', views.view_scores, name='view_scores'),
     # path('view_quizzes/', views.view_quizzes, name='view_quizzes'),
     path('quiz/<slug:quiz_slug>/', views.quiz, name='quiz'),
+    path('view_other_quizzes/', views.view_other_quizzes, name='view_other_quizzes'),
     # path('quiz_success/', views.quiz_success, name='quiz_success'),
 ]

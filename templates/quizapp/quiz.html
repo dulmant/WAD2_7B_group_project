@@ -11,26 +11,26 @@
     <h1>Quiz - Basics of Java:</h1>
 
     <div class="questionbody">
-        <form id="question" method="post" action="">
-            <div class="q-img">
-                <img src="https://commons.wikimedia.org/wiki/File:Health_Quiz,_RAMC;_651-3_Wellcome_L0024826_(cropped).jpg#/media/File:Health_Quiz,_RAMC;_651-3_Wellcome_L0024826_(cropped).jpg" width="500" height="600">
-            </div>
+        <form id="question" method="post" action="" enctype="multipart/form-data">
             <div>
-                <form method="post">
-                    {% csrf_token %}
-                    <div>
-                      {% for question_data in question_data_list %}
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    {% for question_data in question_data_list %}
                         <h3>{{ question_data.question.question_text }}</h3>
+                        {% if question_data.question.image %}
+                            <img src="{{ question_data.question.image.url }}" alt="{{ question_data.question.question_text }}" width="400">
+                        {% endif %}
                         {% for option in question_data.options|shuffle %}
-                          <div>
-                            <input type="radio" name="{{ question_data.question.id }}" value="{{ option }}" id="id_{{ option }}">
-                            <label for="id_{{ option }}">{{ option }}</label>
-                          </div>
+                            <div>
+                                <input type="radio" name="{{ question_data.question.id }}" value="{{ option }}" id="id_{{ option }}">
+                                <label for="id_{{ option }}">{{ option }}</label>
+                            </div>
                         {% endfor %}
-                      {% endfor %}
-                    </div>
-                    <button type="submit">Submit</button>
-                  </form>
+                    {% endfor %}
+                </div>
+                <button type="submit">Submit</button>
+            </form>
                   
             </div>
         </form>

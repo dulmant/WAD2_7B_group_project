@@ -17,7 +17,10 @@ class QuizForm(forms.ModelForm):
     TOPICS = (
         ("Java","Java"),
         ("Algorithms","Algorithms"),
+        ("Veterinary","Veterinary"),
+        ("Mathematics","Mathematics"),
         ("Web App Development","Web App Development"),
+        ("English","English"),
     )
     name = forms.CharField(max_length=250, label="Please enter the name of your quiz:")
     topic = forms.ChoiceField(label="Please choose the topic of your quiz", choices = TOPICS)
@@ -31,7 +34,7 @@ class QuizForm(forms.ModelForm):
 
 class QuestionForm(forms.ModelForm):
     question_text = forms.CharField(max_length=5000, label="Please enter the question:", required=True)
-    image = forms.ImageField(label="Image:", required=False)
+    image = forms.ImageField(label="Image:", required=False, )
     correct_answer = forms.CharField(max_length=200, label="Please enter the correct answer:", required=True)
     incorrect_answer_1 = forms.CharField(max_length=200, label="Please enter the first incorrect answer:")
     incorrect_answer_2 = forms.CharField(max_length=200, label="Please enter the second incorrect answer:")

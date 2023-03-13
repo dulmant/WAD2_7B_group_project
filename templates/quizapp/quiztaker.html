@@ -27,7 +27,7 @@
                 <li>
                     <div>{{quiz.name}}</div><div>Number Of Questions: {{quiz.number_of_questions}}</div><div>Max score: {{quiz.max_score}}</div>
                     <button name="take_quiz" class="btn btn-primary"> 
-                        <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}">Take this Quiz</a>
+                        <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}" style="color: white;" >Take this Quiz</a>
                     </button>
                 </li>
                 {% endfor %}

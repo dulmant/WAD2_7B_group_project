@@ -1,7 +1,7 @@
 {% extends 'quizapp/base.html' %}
 {% load static %}
 
-{% blovk title_block %}
+{% block title_block %}
     Quiz Finished
 {% endblock %}
 
@@ -15,12 +15,12 @@
         <h2>Quiz Finished!</h2>
 
         <p class="maintext">
-            Your score is ()
+            Your score is {{ score }}
         </p>
         
         <div id="buttons">
             <button name="retake" type="button" class="button">
-                <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}">Retake Quiz</a>
+                <a href="{% url 'quizapp:quiz' quiz_slug=quiz_slug %}">Retake Quiz</a>
             </button>
             <button name="dashboard" type="button" class="button">
                 <a href="{% url 'quizapp:quiztaker'%}">Return to dashboard</a>

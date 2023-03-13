@@ -13,8 +13,8 @@ urlpatterns = [
     path('quiz_maker_dashboard/', views.quiz_maker_dashboard, name='quizmaker'),
     path('create_quiz/', views.create_quiz, name='create_quiz'),
     path('add_questions/<slug:quiz_slug>/<int:number_of_questions>', views.add_questions, name='add_questions'),
-    # path('view_scores/', views.view_scores, name='view_scores'),
-    # path('view_quizzes/', views.view_quizzes, name='view_quizzes'),
     path('quiz/<slug:quiz_slug>/', views.quiz, name='quiz'),
-    # path('quiz_success/', views.quiz_success, name='quiz_success'),
-]
+    path('view_other_quizzes/', views.view_other_quizzes, name='view_other_quizzes'),
+    path('quiz_finish/<slug:quiz_slug>/', views.quiz_finish, name='quiz_finish'),
+] 
+

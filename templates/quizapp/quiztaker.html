@@ -7,8 +7,8 @@
 
 {% block body_block %}
 
-    <div class="dashboard">
-        <div id="lefthandside">
+    <div class="row">
+        <div class="col-md-6">
             <h1>Taken Quizzes:</h1>
             <ul class="taken-quizzes-list">
                 <li>Quiz 1</li>
@@ -18,7 +18,7 @@
             </ul>
         </div>
 
-        <div id="righthandside">
+        <div class="col-md-6">
             <h1>Available Quizzes:</h1>
             <ul class="available-quizzes-list">
                 <h2>** INSERT DROPDOWN TO FILTER BY TOPIC **</h2>
@@ -26,7 +26,7 @@
                 {% for quiz in all_quizzes %}
                 <li>
                     <div>{{quiz.name}}</div><div>Number Of Questions: {{quiz.number_of_questions}}</div><div>Max score: {{quiz.max_score}}</div>
-                    <button name="take_quiz" class="button"> 
+                    <button name="take_quiz" class="btn btn-primary"> 
                         <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}"> Take this Quiz</a>
                     </button>
                 </li>

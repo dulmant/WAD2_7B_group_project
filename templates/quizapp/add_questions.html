@@ -1,11 +1,14 @@
-<!DOCTYPE html>
 {% extends 'quizapp/base.html' %}
 {% load static %}
 
 {% block title_block %}
     QuizCentre
 {% endblock %}
-	
+
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'css/add_questions.css' %}">
+{% endblock %}
 
 {% block body_block %}
 

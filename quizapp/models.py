@@ -46,7 +46,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     question_text = models.TextField(max_length=5000)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='question_images', blank=True)
     max_score = models.PositiveIntegerField()
     correct_answer = models.TextField(max_length=200)
     incorrect_answer_1 = models.TextField(max_length=200)

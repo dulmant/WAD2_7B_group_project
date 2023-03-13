@@ -14,7 +14,7 @@
         <p> Currently logged in as {{ username }}</p>   	
         {% endif %}        
 		<div>
-		<form id="Quiz_Form" method="post">
+		<form id="Quiz_Form" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			
 			{{ form.as_p }}

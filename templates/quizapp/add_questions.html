@@ -14,7 +14,7 @@
         <p> Currently logged in as {{ username }}</p>   	
         {% endif %}        
 		<div>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ formset.management_form }}
                 {% for form in formset %}

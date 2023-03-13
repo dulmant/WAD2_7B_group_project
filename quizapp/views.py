@@ -182,7 +182,7 @@ def add_questions(request, quiz_slug, number_of_questions):
         return redirect(reverse('quizapp:create_quiz'))
 
     if request.method == 'POST':
-        formset = my_form_set(request.POST)
+        formset = my_form_set(request.POST, request.FILES)
         if formset.is_valid():
             overall_max_score = 0
             quiz = Quiz.objects.create(name=quiz_form_data['name'],
@@ -191,7 +191,7 @@ def add_questions(request, quiz_slug, number_of_questions):
                                         max_score=overall_max_score,
                                         author=request.user,
                                         author_id=request.user.id,
-                                        name_slug=quiz_slug)
+                                        name_slug=quiz_slug,)
             for form in formset:
                 question = form.save(commit=False)
                 question.quiz = quiz

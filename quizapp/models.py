@@ -58,13 +58,6 @@ class Question(models.Model):
         return self.quiz.name + ": Question " + str(self.id)
 
 
-class QuizInstance(models.Model):
-    quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    quiz_maker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_author')
-
-    def __str__(self):
-        return self.quiz_id.name + " by " + self.quiz_maker.username
-
 
 class QuizAttempt(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

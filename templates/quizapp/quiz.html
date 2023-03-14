@@ -29,9 +29,16 @@
                         {% endfor %}
                     {% endfor %}
                 </div>
+                {% if request.user.user_type == 1 %}
                 <button type="submit">Submit</button>
+                {% else %}
             </form>
-                  
+            <button name="back_to_all_quizzes" class="btn btn-primary" >
+                <a href="{% url 'quizapp:view_other_quizzes' %}"
+                style="color: white;"
+                >Back To All Quizzes</a>
+            </button>
+            {% endif %}
             </div>
         </form>
     </div>

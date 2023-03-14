@@ -17,8 +17,10 @@
             {% for quiz in all_quizzes %}
                 <li class="list-group-item">
                     <div>{{quiz.name}}</div><div>Number of Questions: {{quiz.number_of_questions}}</div>
-                    <button name="view_quiz" class="btn btn-primary">
-                        <a href="{% url 'quizapp:quiz' quiz_slug=quiz.name_slug %}">View Quiz</a>
+                    <button name="view_quiz" class="btn btn-primary" >
+                        <a href="{% url 'quizapp:view_quiz' quiz_slug=quiz.name_slug %}"
+                        style="color: white;"
+                        >View Quiz</a>
                     </button>
                 </li>
             {% endfor %}

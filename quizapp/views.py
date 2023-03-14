@@ -208,7 +208,33 @@ def add_questions(request, quiz_slug, number_of_questions):
 
 @quiz_maker_required
 def view_other_quizzes(request):
-    return render(request, 'quizapp/quizzes_list.html')
+    quizzes_exist = False
+    if Quiz.objects.all().exists():
+        quizzes_exist = True
+    all_quizzes = Quiz.objects.all()
+    return render(request, 'quizapp/quizzes_list.html', {'all_quizzes' : all_quizzes,
+                                                         'quizzes_exist' : quizzes_exist})
+
+@quiz_maker_required
+def view_quiz(request, quiz_slug):
+    quiz_instance = get_object_or_404(Quiz, name_slug=quiz_slug)
+    questions = Question.objects.filter(quiz=quiz_instance)
+    question_data_list = []
+
+    for question in questions:
+        question_options = [question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2,
+                   question.incorrect_answer_3]
+        question_data = {'question': question, 'options': question_options}
+        question_data_list.append(question_data)
+
+    context = {
+        'quiz': quiz_instance,
+        'questions': questions,
+        'number_of_questions': quiz_instance.number_of_questions,
+        'quiz_instance': quiz_instance,
+        'question_data_list': question_data_list
+    }
+    return render(request, 'quizapp/quiz.html', context)
 
 def ajax_delete_quiz(request, quiz_slug):
     try:

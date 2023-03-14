@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from .forms import *
 from django.forms import formset_factory
@@ -209,3 +209,12 @@ def add_questions(request, quiz_slug, number_of_questions):
 @quiz_maker_required
 def view_other_quizzes(request):
     return render(request, 'quizapp/quizzes_list.html')
+
+def ajax_delete_quiz(request, quiz_slug):
+    try:
+        quiz = Quiz.objects.get(name_slug=quiz_slug)
+        quiz.delete()
+        print("we got here")
+        return JsonResponse({"success": True})
+    except Exception as e:
+        return JsonResponse({"success": False})

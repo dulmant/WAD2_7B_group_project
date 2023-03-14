@@ -16,5 +16,6 @@ urlpatterns = [
     path('quiz/<slug:quiz_slug>/', views.quiz, name='quiz'),
     path('view_other_quizzes/', views.view_other_quizzes, name='view_other_quizzes'),
     path('quiz_finish/<slug:quiz_slug>/', views.quiz_finish, name='quiz_finish'),
+    path('ajax/delete_quiz/<slug:quiz_slug>/', views.ajax_delete_quiz, name='ajax_delete_quiz'),
 ] 
 

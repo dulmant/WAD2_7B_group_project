@@ -6,7 +6,12 @@
 {% endblock %}
 
 {% block body_block %}
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/deleteQuiz.js' %}"></script>
+<script>
+    var csrf_token = "{{ csrf_token }}";
+    deleteQuiz.setCsrfToken(csrf_token);
+</script>
     <div class="dashboard">
         <div id="lefthandside">
             <h1>Your Quizzes:</h1>
@@ -15,7 +20,10 @@
                 {% if has_quizzes %}
                 {% for quiz in my_quizzes %}
                 <li>
-                    <div>{{quiz.name}}</div><div>Number Of Questions: {{quiz.number_of_questions}}</div><div>Max score: {{quiz.max_score}}</div>
+                    <div>{{quiz.name}}</div>
+                    <div>Number Of Questions: {{quiz.number_of_questions}}</div>
+                    <div>Max score: {{quiz.max_score}}</div>
+                    <button name="delete" class="button" type="button" onclick="deleteQuiz('{{ quiz.name_slug }}', '{{ csrf_token }}')">Delete Quiz</button>
                 </li>
                 {% endfor %}
                 {% else %}
@@ -23,7 +31,6 @@
                 {% endif %}
             </ul>
         </div>
-
         <div id="righthandside">
             <button name="view-other" class="button">
                 <a href="{% url 'quizapp:view_other_quizzes' %}">View other Quizzes</button>

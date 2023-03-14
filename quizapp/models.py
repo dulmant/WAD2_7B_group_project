@@ -55,17 +55,19 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.quiz.name + ": Question "+ str(self.id)
+        return self.quiz.name + ": Question " + str(self.id)
+
 
 class QuizInstance(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    quiz_maker = models.ForeignKey(User, on_delete=models.CASCADE,related_name='quiz_author')
+    quiz_maker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_author')
     max_score = models.IntegerField()
     actual_score = models.IntegerField()
     quiz_taker = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.quiz_id.name+" by " +self.quiz_maker.username
+        return self.quiz_id.name + " by " + self.quiz_maker.username
+
 
 class QuestionInstance(models.Model):
     quiz_instance_id = models.ForeignKey(QuizInstance, on_delete=models.CASCADE)

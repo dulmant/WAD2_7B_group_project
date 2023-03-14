@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
@@ -7,6 +7,7 @@ from .forms import *
 from django.forms import formset_factory
 from django.shortcuts import get_object_or_404
 from .decorators import *
+from .models import Quiz, Question
 
 
 def index(request):
@@ -68,34 +69,63 @@ def user_logout(request):
     return redirect(reverse('quizapp:index'))
 
 
-from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.forms import formset_factory
-from .models import Quiz, Question
-
-
 @quiz_taker_required
 def quiz(request, quiz_slug):
     quiz_instance = get_object_or_404(Quiz, name_slug=quiz_slug)
-    number_of_questions = quiz_instance.number_of_questions
-
     questions = Question.objects.filter(quiz=quiz_instance)
+    question_data_list = []
+    quiz_attempt_score = 0
 
-    question_options = []
     for question in questions:
-        # add options to question_options list
-        options = [question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2,
+        question_options = [question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2,
                    question.incorrect_answer_3]
-        question_options.append([question, options])
+        question_data = {'question': question, 'options': question_options}
+        question_data_list.append(question_data)
 
+    if request.method == 'POST':
+        for question in questions:
+            selected_option = request.POST.get(str(question.id))
+            if selected_option == question.correct_answer:
+                actual_score = question.max_score
+                quiz_attempt_score += question.max_score
+            else:
+                actual_score = 0
+            # update each answer to the current QuizAttempt object
+            quiz_attempt = QuizAttempt.objects.update_or_create(
+            quiz=quiz_instance,
+            quiz_maker=quiz_instance.author,
+            max_score=quiz_instance.max_score,
+            actual_score=actual_score,
+            quiz_taker=request.user
+            )[0]
+            # create an Answer object for each answer
+            answer = Answer.objects.create(
+                quiz=quiz_instance,
+                question=question,
+                answer_choice=selected_option,
+                max_score=question.max_score,
+                actual_score=quiz_attempt_score,
+                quiz_attempt=quiz_attempt,
+                quiz_taker=request.user,
+            )
+            request.session['quiz_attempt_score'] = quiz_attempt_score # store actual score to pass it to the next view
+        return redirect(reverse('quizapp:quiz_finish',
+                                kwargs = {'quiz_slug' : quiz_slug,}))
     context = {
         'quiz': quiz_instance,
         'questions': questions,
-        'number_of_questions': number_of_questions,
+        'number_of_questions': quiz_instance.number_of_questions,
         'quiz_instance': quiz_instance,
-        'question_options': question_options
+        'question_data_list': question_data_list
     }
     return render(request, 'quizapp/quiz.html', context)
 
+
+@quiz_taker_required
+def quiz_finish(request, quiz_slug):
+    context = {'quiz_slug' : quiz_slug,
+               'score' : request.session.get('quiz_attempt_score') }
+    return render(request, 'quizapp/quiz_finish.html',context)
 
 def about(request):
     return render(request, 'quizapp/about.html')
@@ -132,32 +162,50 @@ def create_quiz(request):
     if request.method == 'POST':
         form = QuizForm(request.POST)
         if form.is_valid():
-            form.instance.max_score = form.instance.number_of_questions
-            form.instance.author = request.user
-            form.instance.author_id = request.user.id
-            form.instance.name_slug = slugify(form.instance.name)
-            form.save()
-            return redirect(reverse('quizapp:add_questions', kwargs={'quiz_slug': form.instance.name_slug,
-                                                                     'number_of_questions': form.instance.number_of_questions}))
-    context = {"form": QuizForm, "username": request.user.username}
+            request.session['quiz_form_data'] = form.cleaned_data
+            return redirect(reverse('quizapp:add_questions', kwargs={'quiz_slug': slugify(form.cleaned_data['name']),
+                                                                     'number_of_questions': form.cleaned_data['number_of_questions']}))
+    else:
+        form = QuizForm()
 
+    context = {"form": form, "username": request.user.username}
     return render(request, 'quizapp/create_quiz.html', context)
 
 
 @quiz_maker_required
 def add_questions(request, quiz_slug, number_of_questions):
     my_form_set = formset_factory(QuestionForm, extra=number_of_questions)
+
+    quiz_form_data = request.session.get('quiz_form_data')
+    if not quiz_form_data:
+        # Redirect to create_quiz view if quiz_form_data not found in session
+        return redirect(reverse('quizapp:create_quiz'))
+
     if request.method == 'POST':
-        formset = my_form_set(request.POST)
+        formset = my_form_set(request.POST, request.FILES)
         if formset.is_valid():
             overall_max_score = 0
+            quiz = Quiz.objects.create(name=quiz_form_data['name'],
+                                        topic=quiz_form_data['topic'],
+                                        number_of_questions=quiz_form_data['number_of_questions'],
+                                        max_score=overall_max_score,
+                                        author=request.user,
+                                        author_id=request.user.id,
+                                        name_slug=quiz_slug,)
             for form in formset:
-                form.instance.quiz = Quiz.objects.get(name_slug=quiz_slug)
-                form.instance.quiz_id = Quiz.objects.get(name_slug=quiz_slug).id
-                form.save()
-                overall_max_score += form.instance.max_score
-            Quiz.objects.update_or_create(name_slug=quiz_slug, defaults={'max_score': overall_max_score})
+                question = form.save(commit=False)
+                question.quiz = quiz
+                question.save()
+                overall_max_score += question.max_score
+            quiz.max_score = overall_max_score
+            quiz.save()
+            del request.session['quiz_form_data']
             return redirect(reverse('quizapp:quizmaker'))
     else:
         formset = my_form_set()
+
     return render(request, 'quizapp/add_questions.html', {'formset': formset, "username": request.user.username})
+
+@quiz_maker_required
+def view_other_quizzes(request):
+    return render(request, 'quizapp/quizzes_list.html')

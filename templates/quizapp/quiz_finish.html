@@ -1,0 +1,31 @@
+{% extends 'quizapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Quiz Finished
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'css/'%}">
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="main">
+        <h2>Quiz Finished!</h2>
+
+        <p class="maintext">
+            Your score is {{ score }}
+        </p>
+        
+        <div id="buttons">
+            <button name="retake" type="button" class="button">
+                <a href="{% url 'quizapp:quiz' quiz_slug=quiz_slug %}">Retake Quiz</a>
+            </button>
+            <button name="dashboard" type="button" class="button">
+                <a href="{% url 'quizapp:quiztaker'%}">Return to dashboard</a>
+            </button>
+        </div>
+    </div>
+
+{% endblock %}
